@@ -7,9 +7,7 @@ nacos(QVD-2023-6271)检测工具
 python3
 
 ```python
-使用方式（支持单个URL检测和批量检测）：
-
-//url做了合规处理，支持输入ip、ip:port样式
+使用方式（支持单个URL检测和批量检测）：//url做了合规处理，支持输入ip、ip:port样式
 
 单个检测：python nacos_auth_bypass.py -u
 
