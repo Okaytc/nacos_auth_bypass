@@ -17,7 +17,8 @@ python3
 
 示例：python nacos_auth_bypass.py -f url.txt
 
-```python
+```
+
 
 演示截图：
 
