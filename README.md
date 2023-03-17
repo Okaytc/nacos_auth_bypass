@@ -6,19 +6,20 @@ nacos(QVD-2023-6271)检测工具
 开发环境：
 python3
 
+```python
 使用方式（支持单个URL检测和批量检测）：
 
 //url做了合规处理，支持输入ip、ip:port样式
 
-python nacos_auth_bypass.py -u
+单个检测：python nacos_auth_bypass.py -u
 
-```python
 示例：python nacos_auth_bypass.py -u http://192.168.1.1/
-```python
 
-python nacos_auth_bypass.py -f
+批量检测：python nacos_auth_bypass.py -f
 
 示例：python nacos_auth_bypass.py -f url.txt
+
+```python
 
 演示截图：
 
