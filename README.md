@@ -12,7 +12,9 @@ python3
 
 python nacos_auth_bypass.py -u
 
+```python
 示例：python nacos_auth_bypass.py -u http://192.168.1.1/
+```python
 
 python nacos_auth_bypass.py -f
 
